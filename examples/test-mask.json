@@ -1,0 +1,25 @@
+{
+	"filelist": [
+		{"name": "in/flower-testcard.png", "time": 0},
+		{"name": "in/flower-testcard.png", "time": 2, "mask": "in/white.png"}
+	],
+	
+	"inpattern": "in/*jpg",
+	
+	"outdir":    "out/",
+	"outformat": "png",
+	"noframes": 100,
+	"nothreads": 30,
+	
+	"masks": [
+		[0,   "in/white.png"],
+		[1.5, "in/vignette.png"]
+	],
+	
+	"gammas": [
+		[0,   [1,1,1]],
+		[1,   [1, 1.5, 1]],
+		[1.5, [1,1,1.5]],
+		[2,   [0.5, 0.5, 0.5]]
+	]
+}
