@@ -1,0 +1,84 @@
+Stacking HOWTO
+==============
+
+Copyright
+---------
+
+The stack.py and stack-32bit.py scripts are copyright (C) Tim Haynes 2010 and
+may be used and distributed under the terms of the GNU General Public License
+(GPL) version 3 or higher.
+
+
+What?
+----
+
+Stacking is the process of taking multiple source images and generating a result
+where each pixel is the simple average (mean) of the corresponding pixels from
+all the sources.
+
+
+Why?
+---
+
+There are at least two situations in which this is useful:
+
+1) Reducing effective ISO noise: all digital images suffer from thermal sensor
+noise, which can be regarded as random small offsets in pixel values - so if the
+image signal says a pixel should be a particular (r,g,b) value, the recorded
+pixel might have a small offset (r+dr, g+dg, b+db). As ISO sensitivity
+increases, fewer photons are required to cause the same change in recorded
+pixels, which means that the fixed number of thermal photons contributes a
+greater proportion of the image - so the apparent noise increases. However,
+because the noise is effectively random, the more times a pixel is read the more
+accurate the reading becomes: specifically the effective ISO drops as 1/2^N
+where N is the number of frames. For example, four images taken at ISO 1600,
+averaged together, have the same effective signal:noise ratio as one image at
+ISO 400.
+
+2) Simulating long exposures: some scenes require quite long exposures to
+achieve desired motion-blur effects (for example, choppy seas at the coast often
+run to a minute or more). If the lighting is bright daylight, it might not be
+practical to carry sufficient filters to reduce the exposure to such an extent,
+and even if it's possible to reduce the aperture small enough, it might not be
+desirable as diffraction will degrade image-quality significantly. Hence, with
+an intervalometer, one can take several photos of a scene over a prolonged
+period and by averaging the results, simulate the effect of one longer exposure.
+
+
+How?
+---
+
+The scripts stack.py and stack-32bit.py operate identically except that
+stack-32bit.py maintains a running average with 32-bit precision internally.
+
+Requirements: python (tested with 2.6); Python Image Library (PIL) compiled with
+support for whatever format your source images come in (typically JPEG, PNG
+and/or TIFF).
+
+Usage:
+		
+		stack.py *.JPG
+--> results in out.png
+
+		stack-32bit.py *.png
+--> results in files out32.png, out-r32.png, out-g32.png, out-b32.png
+
+
+Optional: 
+
+The file =adjustment.json= may be used to specify a tone curve, applied to each
+image immediately after it's opened, before averaging takes place.
+
+When run without any parameters, the script gen-curve.py generates a greyscale
+spectrum, greyscale-strip.png. This can be opened in the Gimp or Photoshop
+alongside one of the sample input images, levels and curves operations applied
+in parallel and then the greyscale-strip.png saved out again.
+
+When run a second time, with an image file as argument, the script emits a JSON
+mapping of the image:
+
+		./gen-curve.py greyscale-strip.png > adjustment.json
+
+This is useful where the source images are 8-bit and you want a dramatic tone
+curve (for example, lightening dark shadow areas).
+
