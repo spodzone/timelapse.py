@@ -34,6 +34,7 @@ def main():
 	"outdir": 		outdir,
 	"outformat": 	"png",
 	"noframes": 	100,
+	"nothreads": 	5,
 	"gammas": 		[],
 	"blur": 			[],
 	"mask": 			[],

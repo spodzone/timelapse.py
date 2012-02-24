@@ -94,7 +94,7 @@ class Timeline:
 		idx=0
 		while (s.filelist[idx].imageCtime()<t) and idx<len(s.filelist)-1:
 			idx+=1
-		idx-=1
+		idx=max(0, idx-1)
 		rem=t-(s.filelist[idx].imageCtime())
 		diff=s.filelist[idx+1].imageCtime() - s.filelist[idx].imageCtime()
 		return (idx, float(rem)/diff)

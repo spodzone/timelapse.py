@@ -38,28 +38,25 @@ class InterpImage:
 				return s.img
 		except:
 			s.img=Image.open(s.filename).convert("RGB")
-			if s.crop is not None:
+			try:
 				s.img=s.img.crop( tuple(s.crop[0]+s.crop[1]))
-			if s.scale is not None:
+			except:
+				pass
+			try:
 				s.img=s.img.resize( tuple(s.scale), Image.ANTIALIAS )
+			except:
+				pass
 		return s.img
 	
 	def get_exif(s):
 		"Return a hash of EXIF info for the current image"
-		try:
-			if s.exif is not None:
-				return s.exif
-		except:
-			ret = {}
-			i = Image.open(s.filename).convert("RGB")
-			try:
-				info = i._getexif()
-				for tag, value in info.items():
-					decoded = TAGS.get(tag, tag)
-					ret[decoded] = value
-			except:
-				ret={}
-			s.exif=ret
+		ret = {}
+		i = Image.open(s.filename)
+		info = i._getexif()
+		for tag, value in info.items():
+			decoded = TAGS.get(tag, tag)
+			ret[decoded] = value
+		s.exif=ret
 		return s.exif
 	
 	def isoTime(s,t):
@@ -68,15 +65,12 @@ class InterpImage:
 	
 	def imageCtime(s):
 		"Return either the EXIF image-creation date if possible or file mtime"
-		try:
-			if s.ctime is not None:
-				return s.ctime
-		except:
-			exif=s.get_exif()
-			timestr=lookupDef(exif, "DateTimeOriginal", 
-				lookupDef(exif, "DateTime", 
-					lookupDef(exif, "DateTimeDigitized", 
-						getmtime(s.filename))))
+		exif=s.get_exif()
+		timestr=lookupDef(exif, "DateTimeOriginal", 
+			lookupDef(exif, "DateTime", 
+				lookupDef(exif, "DateTimeDigitized", 
+					getmtime(s.filename))))
+		
 		try:
 			if type(timestr)==float:
 				ret=timestr
@@ -140,10 +134,13 @@ def imageMask(img, mask):
 		return img
 
 def imageBlur(img, degree):
-	for i in range(int(degree)):
-		img=img.filter(ImageFilter.BLUR)
-	b=img
-	b=b.filter(ImageFilter.BLUR)
+	if degree==0.0:
+		return img
+	else:
+		for i in range(int(degree)):
+			img=img.filter(ImageFilter.BLUR)
+		b=img
+		b=b.filter(ImageFilter.BLUR)
 	return imageBlend(img, b, float(degree-int(degree)))
 
 def imageAutoContrast(img, r=1.0):
