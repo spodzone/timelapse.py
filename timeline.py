@@ -19,7 +19,14 @@ class Timeline:
 		
 		s.crop=lookupDef(s.config, "crop", None)
 		s.scale=lookupDef(s.config, "scale", None)
-		s.nothreads=lookupDef(s.config, "nothreads", 2)
+		s.rotate=lookupDef(s.config, "rotate", None)
+		s.nothreads=lookupDef(s.config, "nothreads", 5)
+		
+		s.curves=None
+		curves=lookupDef(s.config, "curves", None)
+		if curves is not None:
+			rgb=json.loads(open(curves, "r").read())
+			s.curves=rgb["red"]+rgb["blue"]+rgb["green"]
 
 		s.filelist=[ InterpImage(x["name"], 
 			lookupDef(x, "time", None), 
@@ -28,7 +35,9 @@ class Timeline:
 			lookupDef(x, "blur", 0),
 			lookupDef(x, "ac", 0),
 			s.crop,
-			s.scale
+			s.scale,
+			s.rotate,
+			s.curves
 			) 
 			for x in s.config["filelist"] ]
 			
@@ -97,7 +106,11 @@ class Timeline:
 		idx=max(0, idx-1)
 		rem=t-(s.filelist[idx].imageCtime())
 		diff=s.filelist[idx+1].imageCtime() - s.filelist[idx].imageCtime()
-		return (idx, float(rem)/diff)
+		try:
+			r=float(rem)/diff
+		except:
+			r=0.0
+		return (idx, r)
 
 	def gammaAtTime(s, t):
 		"Find gamma at given time T"
