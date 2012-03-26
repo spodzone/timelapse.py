@@ -34,11 +34,12 @@ def main():
 	"outdir": 		outdir,
 	"outformat": 	"png",
 	"noframes": 	100,
-	"nothreads": 	5,
 	"gammas": 		[],
 	"blur": 			[],
 	"mask": 			[],
 	"ac":   			[],
+	"rotate":			0,
+	"nothreads":	5,
 	"crop":  [[], [] ],
 	"scale": [  ]
 	}

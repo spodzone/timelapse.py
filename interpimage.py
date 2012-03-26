@@ -20,7 +20,7 @@ def lookupDef(hash,v,d=0):
 
 class InterpImage:
 	
-	def __init__(s, fname, t=None, gamma=None, mask=None, blur=0, ac=0.0, crop=None, scale=None):
+	def __init__(s, fname, t=None, gamma=None, mask=None, blur=0, ac=0.0, crop=None, scale=None, rotate=None, curves=None):
 		s.filename=fname
 		s.image=s.loadImage
 		if t is not None:
@@ -31,23 +31,26 @@ class InterpImage:
 		s.ac=ac
 		s.crop=crop
 		s.scale=scale
-		
+		s.rotate=rotate
+		s.curves=curves
+	
 	def loadImage(s):
 		try:
 			if s.img is not None:
 				return s.img
 		except:
-			s.img=Image.open(s.filename).convert("RGB")
-			try:
-				s.img=s.img.crop( tuple(s.crop[0]+s.crop[1]))
-			except:
-				pass
-			try:
-				s.img=s.img.resize( tuple(s.scale), Image.ANTIALIAS )
-			except:
-				pass
-		return s.img
-	
+			s.img = Image.open(s.filename).convert("RGB")
+			if s.curves is not None:
+				s.img = s.img.point(s.curves)   
+			if s.rotate is not None:
+				s.img = s.img.rotate(s.rotate, Image.BILINEAR, True)
+			if s.crop is not None:
+				s.img = s.img.crop( tuple(s.crop[0]+s.crop[1]))
+				s.img.load()
+			if s.scale is not None:
+				s.img = s.img.resize( tuple(s.scale), Image.ANTIALIAS )
+			return s.img
+		
 	def get_exif(s):
 		"Return a hash of EXIF info for the current image"
 		ret = {}
@@ -65,12 +68,15 @@ class InterpImage:
 	
 	def imageCtime(s):
 		"Return either the EXIF image-creation date if possible or file mtime"
-		exif=s.get_exif()
-		timestr=lookupDef(exif, "DateTimeOriginal", 
-			lookupDef(exif, "DateTime", 
-				lookupDef(exif, "DateTimeDigitized", 
-					getmtime(s.filename))))
-		
+		try:
+			exif=s.get_exif()
+			timestr=lookupDef(exif, "DateTimeOriginal", 
+				lookupDef(exif, "DateTime", 
+					lookupDef(exif, "DateTimeDigitized", 
+						getmtime(s.filename))))
+		except:
+			timestr=getmtime(s.filename)
+			
 		try:
 			if type(timestr)==float:
 				ret=timestr
