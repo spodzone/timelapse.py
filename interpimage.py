@@ -7,11 +7,8 @@
 
 import time
 from os.path import getmtime
-import Image
-import ImageOps
-import ImageChops
-import ImageFilter
-from Image import blend as imageBlend
+from PIL import Image, ImageOps, ImageChops, ImageFilter
+from PIL.Image import blend as imageBlend
 from PIL.ExifTags import TAGS
 
 

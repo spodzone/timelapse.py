@@ -2,8 +2,8 @@
 
 import glob, sys
 import json
-import Image, ImageMath, ImageOps, ImageChops, ImageFilter
-from Image import blend as imageBlend
+from PIL import Image, ImageMath, ImageOps, ImageChops, ImageFilter
+from PIL.Image import blend as imageBlend
 
 #
 # Image-stacking script

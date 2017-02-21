@@ -5,7 +5,7 @@
 #
 
 import json
-import Image
+from PIL import Image
 import threading
 
 from interpimage import *

@@ -13,7 +13,7 @@
 #						and generate curves accordingly
 #
 
-import Image
+from PIL import Image
 import json
 from sys import argv
 
