@@ -28,7 +28,7 @@ def main():
 	except:
 		print("Some problem reading adjustment.json")
 		pass
-		
+
 	print("Reading image " + sys.argv[1])
 	img=Image.open(sys.argv[1]).convert("RGB")
 	if curves is not None:
@@ -43,7 +43,7 @@ def main():
 			new=new.point(curves)
 
 		newr,newg,newb=[ r.convert("F") for r in new.split() ]
-		
+
 		n+=1
 		print("Read in image [%04d] [%s]" % (n,f))
 		imgr=imageBlend(imgr, newr, 1.0/n)
@@ -53,7 +53,7 @@ def main():
 		del(newr)
 		del(newg)
 		del(newb)
-	
+
 	imgr.convert("RGB").save("out-r32.png")
 	imgg.convert("RGB").save("out-g32.png")
 	imgb.convert("RGB").save("out-b32.png")

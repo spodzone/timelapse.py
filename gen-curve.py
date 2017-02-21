@@ -4,8 +4,8 @@
 # Assist generating custom curve mappings
 #
 #
-# Usage: 
-# ./gen-curve.py     
+# Usage:
+# ./gen-curve.py
 #	 					with no parameters will output greyscale-strip.png
 #						At this point, you go edit it in Photoshop or Gimp etc
 # ./gen-curve.py greyscale-strip.png

@@ -15,7 +15,7 @@ def main():
 	if len(sys.argv)<1:
 		print("Come on, give me some files to play with")
 		return
-		
+
 	curves=None
 	try:
 		rgb=json.loads(open("adjustment.json", "r").read())
@@ -24,7 +24,7 @@ def main():
 	except:
 		print("Some problem reading adjustment.json")
 		pass
-	
+
 	print("Reading image " + sys.argv[1])
 	img=Image.open(sys.argv[1]).convert("RGB")
 	n=0
@@ -36,7 +36,7 @@ def main():
 		print("Read in image [%04d] [%s]" % (n,f))
 		img=imageBlend(img, new, 1.0/n)
 		del(new)
-	
+
 	img.convert("RGB").save("out.png")
 	print("Written out.png")
 
