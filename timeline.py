@@ -245,12 +245,12 @@ class Timeline(object):
                     [i.reap() for i in self.filelist[:idx - 2]]
                 threads = []
             n += 1
-        print "Tidying up"
+        print("Tidying up")
         [t.start() for t in threads]
         [t.join() for t in threads]
 
     def render(self):
-        print "Rendering with %d threads" % self.nothreads
+        print("Rendering with %d threads" % self.nothreads)
         if self.nothreads == 1:
             self.renderLinear()
         else:
@@ -260,7 +260,7 @@ class Timeline(object):
 def test():
     conffile = "test-config.json"
     tl = Timeline(conffile)
-    print "Timeline found:\n" + str(tl)
+    print("Timeline found:\n" + str(tl))
     tl.render()
 
 if __name__ == "__main__":

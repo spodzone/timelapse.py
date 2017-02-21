@@ -21,7 +21,7 @@ from sys import argv
 def generate(fname="greyscale-strip.png"):
 	#write a greyscale spectrum to file fname, for editing in gimp/etc
 	img=Image.new("RGB", (256,10) )
-	print "New image size: %s" % str(img.size)
+	print("New image size: %s" % str(img.size))
 	for y in range(10):
 		for x in xrange(256):
 			img.putpixel( (x,y), (x,x,x) )
@@ -45,7 +45,7 @@ def readBack(fname="greyscale-strip.png"):
 	"green": g,
 	"blue": b
 	}
-	print json.dumps(data, indent=2, sort_keys=False)
+	print(json.dumps(data, indent=2, sort_keys=False))
 
 
 if __name__=="__main__":
