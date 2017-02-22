@@ -16,11 +16,11 @@ def imageBlend(a, b, r):
 
 def main():
 	if len(sys.argv)<1:
-		print "Come on, give me some files to play with"
+		print("Come on, give me some files to play with")
 		return
-		
-	print "Reading image " + sys.argv[1]
-	
+
+	print("Reading image " + sys.argv[1])
+
 	incoming=cv.LoadImageM(sys.argv[1])
 	w,h=(incoming.cols,incoming.rows)
 	nw,nh=(int(w*1.5+0.5), int(h*1.5+0.5))
@@ -36,15 +36,15 @@ def main():
 		cv.Convert(incoming, new)
 
 		n+=1
-		print "Read in image [%04d] [%s]" % (n,f)
+		print("Read in image [%04d] [%s]" % (n,f))
 		img=imageBlend(img, new, 1.0/n)
-		
+
 		del(new)
-		
+
 	out=cv.CreateImage(cv.GetSize(img), cv.IPL_DEPTH_16U, 3)
 	cv.ConvertScale(img, out, 256.)
 	cv.SaveImage("out-16-up.png", out)
-	print "Written out-16-up.png"
+	print("Written out-16-up.png")
 
 if __name__=="__main__":
 	main()

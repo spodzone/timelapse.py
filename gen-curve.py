@@ -4,8 +4,8 @@
 # Assist generating custom curve mappings
 #
 #
-# Usage: 
-# ./gen-curve.py     
+# Usage:
+# ./gen-curve.py
 #	 					with no parameters will output greyscale-strip.png
 #						At this point, you go edit it in Photoshop or Gimp etc
 # ./gen-curve.py greyscale-strip.png
@@ -13,7 +13,7 @@
 #						and generate curves accordingly
 #
 
-import Image
+from PIL import Image
 import json
 from sys import argv
 
@@ -21,7 +21,7 @@ from sys import argv
 def generate(fname="greyscale-strip.png"):
 	#write a greyscale spectrum to file fname, for editing in gimp/etc
 	img=Image.new("RGB", (256,10) )
-	print "New image size: %s" % str(img.size)
+	print("New image size: %s" % str(img.size))
 	for y in range(10):
 		for x in xrange(256):
 			img.putpixel( (x,y), (x,x,x) )
@@ -45,7 +45,7 @@ def readBack(fname="greyscale-strip.png"):
 	"green": g,
 	"blue": b
 	}
-	print json.dumps(data, indent=2, sort_keys=False)
+	print(json.dumps(data, indent=2, sort_keys=False))
 
 
 if __name__=="__main__":

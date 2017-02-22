@@ -7,11 +7,8 @@
 
 import time
 from os.path import getmtime
-import Image
-import ImageOps
-import ImageChops
-import ImageFilter
-from Image import blend as imageBlend
+from PIL import Image, ImageOps, ImageChops, ImageFilter
+from PIL.Image import blend as imageBlend
 from PIL.ExifTags import TAGS
 
 
@@ -48,7 +45,7 @@ class InterpImage(object):
         if self.rotate is not None:
             self.img = self.img.rotate(self.rotate, Image.BILINEAR, True)
         if self.crop is not None:
-            print "crop %s" % self.crop
+            print("crop %s" % self.crop)
             self.img = self.img.crop(tuple(self.crop[0] + self.crop[1]))
             self.img.load()
         if self.scale is not None:
@@ -98,12 +95,12 @@ class InterpImage(object):
     def interp(self, other, r):
         "Interpolate r proportion of the way between this and another image"
         try:
-            print "image %s" % self.image
-            print "other %s" % other
-            print "rem %s" % r
+            print("image %s" % self.image)
+            print("other %s" % other)
+            print("rem %s" % r)
             ret = imageBlend(self.image, other.image, r).convert("RGB")
         except ValueError:
-            print ("Eeeek! Failed to blend %s and %s" %
+            print("Eeeek! Failed to blend %s and %s" %
                    (self.filename, other.filename))
             ret = None
             pass
