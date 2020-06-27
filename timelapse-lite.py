@@ -14,6 +14,13 @@ def tlog(s):
     print("%s: %s" % (time.asctime(), s))
 
 
+def findFiles(indir):
+    "return sorted list of input files and mtimes"
+    fnames = glob.glob(indir + "/*")
+    mtimes=map(getmtime, fnames)
+    filedata=sorted(zip(mtimes, fnames))
+    return filedata
+
 def main():
     (noframes, indir, outdir) = [1500, "jpeg-in", "jpeg-out"]
     if len(sys.argv) > 1:
