@@ -62,6 +62,7 @@ def mktasks(filedata, noframes):
 def interpolateImage(task, outdir):
     "implement task - interpolate between two images"
     f1,f2,alpha,counter=task
+    tlog("Image %d: files=[%s],[%s] prop=%f" % ( counter,f1,f2,alpha))
     img1=Image.open(f1).convert("RGB")
     img2=Image.open(f2).convert("RGB")
     img=imageBlend(img1, img2, alpha).convert("RGB")
@@ -75,6 +76,7 @@ def interpolateImages(tasks, outdir, threads=2):
 
 def main():
     (noframes, indir, outdir, threads) = [1500, "jpeg-in", "jpeg-out", 2]
+    tlog("Parameters")
     if len(sys.argv) > 1:
         noframes = int(sys.argv[1])
     if len(sys.argv) > 2:
@@ -84,8 +86,13 @@ def main():
     if len(sys.argv) > 4:
         threads = int(sys.argv[4])
 
+    tlog("Finding files")
     filedata=findFiles(indir)
+
+    tlog("Building task-list")
     tasks=mktasks(filedata, noframes)
+
+    tlog("Running")
     interpolateImages(tasks, outdir, threads)
 
 if __name__ == "__main__":
