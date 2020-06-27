@@ -8,10 +8,19 @@ import time
 from os.path import getmtime
 from PIL import Image, ImageOps, ImageChops, ImageFilter
 from PIL.Image import blend as imageBlend
+from multiprocessing.dummy import Pool as ThreadPool
+
 
 def tlog(s):
     "Output info log message S"
     print("%s: %s" % (time.asctime(), s))
+
+def pMap(fn, arr, threads=2):
+    pool = ThreadPool(threads)
+    results = pool.map(fn, arr)
+    pool.close()
+    pool.join()
+    return results
 
 
 def findFiles(indir):
@@ -48,7 +57,6 @@ def mktasks(filedata, noframes):
     fileafters=[ fileafter(filedata, ts)[1] for ts in timestamps ]
     tasks=[ tsproportion(filedata, ts) for ts in timestamps ]
     return list(zip(filebefores, fileafters, tasks, range(noframes)))
-
 
 def main():
     (noframes, indir, outdir) = [1500, "jpeg-in", "jpeg-out"]
