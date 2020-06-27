@@ -12,3 +12,17 @@ from PIL.Image import blend as imageBlend
 def tlog(s):
     "Output info log message S"
     print("%s: %s" % (time.asctime(), s))
+
+
+def main():
+    (noframes, indir, outdir) = [1500, "jpeg-in", "jpeg-out"]
+    if len(sys.argv) > 1:
+        noframes = sys.argv[1]
+    if len(sys.argv) > 2:
+        indir = sys.argv[2]
+    if len(sys.argv) > 3:
+        outdir = sys.argv[3]
+
+
+if __name__ == "__main__":
+    main()
