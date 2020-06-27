@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from PIL import Image
-from sys import argv
+import sys
 import os
 import glob
 import time
@@ -74,14 +74,19 @@ def interpolateImages(tasks, outdir, threads=2):
 
 
 def main():
-    (noframes, indir, outdir) = [1500, "jpeg-in", "jpeg-out"]
+    (noframes, indir, outdir, threads) = [1500, "jpeg-in", "jpeg-out", 2]
     if len(sys.argv) > 1:
-        noframes = sys.argv[1]
+        noframes = int(sys.argv[1])
     if len(sys.argv) > 2:
         indir = sys.argv[2]
     if len(sys.argv) > 3:
         outdir = sys.argv[3]
+    if len(sys.argv) > 4:
+        threads = int(sys.argv[4])
 
+    filedata=findFiles(indir)
+    tasks=mktasks(filedata, noframes)
+    interpolateImages(tasks, outdir, threads)
 
 if __name__ == "__main__":
     main()
