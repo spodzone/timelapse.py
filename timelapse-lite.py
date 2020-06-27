@@ -58,6 +58,21 @@ def mktasks(filedata, noframes):
     tasks=[ tsproportion(filedata, ts) for ts in timestamps ]
     return list(zip(filebefores, fileafters, tasks, range(noframes)))
 
+
+def interpolateImage(task, outdir):
+    "implement task - interpolate between two images"
+    f1,f2,alpha,counter=task
+    img1=Image.open(f1).convert("RGB")
+    img2=Image.open(f2).convert("RGB")
+    img=imageBlend(img1, img2, alpha).convert("RGB")
+    outfname=outdir+"/img-%05d.jpg" % (counter)
+    img.save(outfname)
+
+def interpolateImages(tasks, outdir, threads=2):
+    "main loop - run a list of tasks"
+    pMap(lambda t: interpolateImage(t, outdir), tasks, threads)
+
+
 def main():
     (noframes, indir, outdir) = [1500, "jpeg-in", "jpeg-out"]
     if len(sys.argv) > 1:
